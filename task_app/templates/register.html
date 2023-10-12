@@ -1,0 +1,179 @@
+{% extends "layout.html" %} 
+{% block header %}
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+      document.querySelector("#passwords_match").style.display = "none"
+      document.querySelector("#passwords_dont_match").style.display = "none"
+    // CODE FOR CHECKING USERNAME AND EMAIL AVAILIBILITY 
+        document.querySelector("#username_available").style.display = "none"
+        document.querySelector("#username_unavailable").style.display = "none"
+        document.querySelector("#email_available").style.display = "none"
+        document.querySelector("#email_unavailable").style.display = "none"
+        // Checking username availaibility 
+        document.querySelector("#username").onkeyup = function(){
+            var username = document.querySelector("#username").value
+        form_data = new FormData()
+        form_data.append("username", username)
+        fetch("/validate_username/",{
+            method:"POST",
+            body:form_data
+        }).then(response => response.json()).then(data = function(data){
+            if(data.r == 200){
+               document.querySelector("#username_available").style.display = "block"
+               document.querySelector("#username_unavailable").style.display = "none"
+            }
+            else if(data.r == 20){
+                document.querySelector("#username_available").style.display = "none"
+               document.querySelector("#username_unavailable").style.display = "block"
+            }
+
+        })
+        }
+        document.querySelector("#email").onkeyup = function(){
+            var email = document.querySelector("#email").value 
+            form_data = new FormData()
+            form_data.append("email", email)
+            fetch("/validate_email/", {
+                method:"POST",
+                body:form_data
+            }).then(response => response.json()).then(data = function(data){
+                // console.log(data)
+                if(data.r == 200){
+                    document.querySelector("#email_available").style.display = "block"
+                    document.querySelector("#email_unavailable").style.display = "none"
+                }
+                else{
+                    document.querySelector("#email_unavailable").style.display = "block"
+                    document.querySelector("#email_available").style.display = "none"
+                }
+            })
+
+        }
+      // CODE FOR HANDLING REGISTRATION  
+      document.querySelector("#submit").onclick = function(){
+        event.preventDefault()
+        username = document.querySelector("#username").value 
+        email = document.querySelector("#email").value 
+        password = document.querySelector("#password").value 
+        cpassword =  document.querySelector("#cpassword").value 
+
+        form_data = new FormData()
+        form_data.append("username", username)
+        form_data.append("email", email)
+        form_data.append("password", password)
+        form_data.append("cpassword", cpassword)
+
+        fetch("/register_view/", {
+          method:"POST",
+          body:form_data
+        }).then(response => response.json()).then(data = function(data){
+          console.log(data)
+        })
+
+        console.log(username, email, password)
+      }
+      // CODE FOR CHECKING PASSWORD MATCH  
+      document.querySelector("#cpassword").onkeyup = function(){
+         var password = document.querySelector("#password").value 
+         var cpassword = document.querySelector("#cpassword").value 
+
+         if(password == cpassword){
+          document.querySelector("#passwords_match").style.display = "block"
+          document.querySelector("#passwords_dont_match").style.display = "none"
+         }
+         else if(password != cpassword){
+          document.querySelector("#passwords_match").style.display = "none"
+          document.querySelector("#passwords_dont_match").style.display = "block"
+         }
+      }
+    })
+    
+    
+    
+    
+</script>
+<title>Register</title>
+ {% endblock %}
+{% block body %} 
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+  
+                  <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                  <div class="text-center"> <!-- Add this div for text centering -->
+                    <strong style="font-size: 20px; color: red;">{{message}}</strong>
+                </div>
+                  <form class="mx-1 mx-md-4">
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="text" id="username" class="form-control" required/>
+                        <label class="form-label" for="form3Example1c">Username</label>
+                        <strong style = "font-size: 10px; color:green" id = "username_available">Username Available</strong>
+                        <strong style = "font-size: 10px; color:red" id = "username_unavailable">Username Unavailable</strong>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="email" id="email" class="form-control" required />
+                        <label class="form-label" for="form3Example3c">Your Email</label>
+                        <strong style = "font-size: 10px; color:green" id = "email_available">Email Available</strong>
+                        <strong style = "font-size: 10px; color:red" id = "email_unavailable">Email Unavailable</strong>
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="password" id="password" class="form-control" />
+                        <label class="form-label" for="form3Example4c">Password</label>
+                  
+                      </div>
+                    </div>
+  
+                    <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+                        <input type="password" id="cpassword" class="form-control" />
+                        <label class="form-label" for="form3Example4cd">Repeat your password</label>
+                        <strong style = "font-size: 10px; color:green" id = "passwords_match">Passwords Match!</strong>
+                        <strong style = "font-size: 10px; color:red" id = "passwords_dont_match">Passwords Do Not Match!</strong>
+                      </div>
+                    </div>
+  
+                    <div class="form-check d-flex justify-content-center mb-5">
+                      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                      <label class="form-check-label" for="form2Example3">
+                        I agree all statements in <a href="#!">Terms of service</a>
+                      </label>
+                    </div>
+  
+                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      <button type="submit" id = "submit" class="btn btn-primary btn-lg">Register</button>
+                    </div>
+  
+                  </form>
+  
+                </div>
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+  
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                    class="img-fluid" alt="Sample image">
+  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
