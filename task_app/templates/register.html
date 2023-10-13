@@ -67,10 +67,19 @@
           method:"POST",
           body:form_data
         }).then(response => response.json()).then(data = function(data){
-          console.log(data)
+          // console.log(data)
+          if (data.message !== undefined && data.message !== null && data.message !== "") {
+            document.querySelector("#message").innerHTML = data.message;
+          }
+          if(data.message_success != undefined && data.message_success != null && data.message_success != "")
+          {
+          document.querySelector("#message_success").innerHTML = data.message_success
+          }
+          
+          
         })
 
-        console.log(username, email, password)
+        // console.log(username, email, password)
       }
       // CODE FOR CHECKING PASSWORD MATCH  
       document.querySelector("#cpassword").onkeyup = function(){
@@ -106,7 +115,8 @@
   
                   <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
                   <div class="text-center"> <!-- Add this div for text centering -->
-                    <strong style="font-size: 20px; color: red;">{{message}}</strong>
+                    <strong id="message" style="font-size: 20px; color: red;">{{message}}</strong>
+                    <strong id= "message_success" style="font-size: 20px; color: green;">{{message_success}}</strong>
                 </div>
                   <form class="mx-1 mx-md-4">
   
@@ -149,12 +159,12 @@
                       </div>
                     </div>
   
-                    <div class="form-check d-flex justify-content-center mb-5">
+                    <!-- <div class="form-check d-flex justify-content-center mb-5">
                       <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
                       <label class="form-check-label" for="form2Example3">
                         I agree all statements in <a href="#!">Terms of service</a>
                       </label>
-                    </div>
+                    </div> -->
   
                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                       <button type="submit" id = "submit" class="btn btn-primary btn-lg">Register</button>
@@ -163,12 +173,14 @@
                   </form>
   
                 </div>
-                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                
   
                   <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
                     class="img-fluid" alt="Sample image">
   
                 </div>
+                <p>Already have an account? <a href="{% url 'task_app:login_view' %}" class="link-info">Login</a></p>
+                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
               </div>
             </div>
           </div>

@@ -6,6 +6,8 @@ admin.site.register(models.Task)
 
 admin.site.register(models.Users)
 
+admin.site.register(models.otp_verification)
+
 @admin.register(Session)
 class SessionAdmin(admin.ModelAdmin):
     list_display = ("session_key", "expire_date", "get_decoded_session_data")

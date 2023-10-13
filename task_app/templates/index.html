@@ -1,104 +1,394 @@
-{% extends "layout.html" %}
+{% extends "layout2.html" %}
 {% block header %}
+<style>
+    /* TASK planner css  */
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+} */
+.container {
+    max-width: 600px; /* Adjust the width as needed */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+
+.header {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.task-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#task-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+#add-task {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.task-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.task-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.task-list .task-text {
+    flex: 1;
+}
+
+.task-list .task-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.task-list .update-task, .task-list .delete-task {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+    /* OTP FORM STYLE  */
+.card {
+  width: 350px;
+  padding: 10px;
+  border-radius: 20px;
+  background: #fff;
+  border: none;
+  height: 350px;
+  position: relative;
+}
+
+.container {
+  height: 100vh;
+}
+
+body {
+  background: #eee;
+}
+
+.mobile-text {
+  color: #989696b8;
+  font-size: 15px;
+}
+
+.form-control {
+  margin-right: 12px;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #ff8880;
+  outline: 0;
+  box-shadow: none;
+}
+
+.cursor {
+  cursor: pointer;
+}
+/* TABLE  */
+table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2; /* Lighter background for the header */
+    }
+</style>
 <script>
-//     $( document ).ready(function() {
-    
-//     "use strict";
-    
-//     var todo = function() { 
-//         $('.todo-list .todo-item input').click(function() {
-//         if($(this).is(':checked')) {
-//             $(this).parent().parent().parent().toggleClass('complete');
-//         } else {
-//             $(this).parent().parent().parent().toggleClass('complete');
-//         }
-//     });
-    
-//     $('.todo-nav .all-task').click(function() {
-//         $('.todo-list').removeClass('only-active');
-//         $('.todo-list').removeClass('only-complete');
-//         $('.todo-nav li.active').removeClass('active');
-//         $(this).addClass('active');
-//     });
-    
-//     $('.todo-nav .active-task').click(function() {
-//         $('.todo-list').removeClass('only-complete');
-//         $('.todo-list').addClass('only-active');
-//         $('.todo-nav li.active').removeClass('active');
-//         $(this).addClass('active');
-//     });
-    
-//     $('.todo-nav .completed-task').click(function() {
-//         $('.todo-list').removeClass('only-active');
-//         $('.todo-list').addClass('only-complete');
-//         $('.todo-nav li.active').removeClass('active');
-//         $(this).addClass('active');
-//     });
-    
-//     $('#uniform-all-complete input').click(function() {
-//         if($(this).is(':checked')) {
-//             $('.todo-item .checker span:not(.checked) input').click();
-//         } else {
-//             $('.todo-item .checker span.checked input').click();
-//         }
-//     });
-    
-//     $('.remove-todo-item').click(function() {
-//         $(this).parent().remove();
-//     });
-//     };
-    
-//     todo();
-    
-//     $(".add-task").keypress(function (e) {
-//         if ((e.which == 13)&&(!$(this).val().length == 0)) {
-//             $('<div class="todo-item"><div class="checker"><span class=""><input type="checkbox"></span></div> <span>' + $(this).val() + '</span> <a href="javascript:void(0);" class="float-right remove-todo-item"><i class="icon-close"></i></a></div>').insertAfter('.todo-list .todo-item:last-child');
-//             $(this).val('');
-//         } else if(e.which == 13) {
-//             alert('Please enter new task');
-//         }
-//         $(document).on('.todo-list .todo-item.added input').click(function() {
-//             if($(this).is(':checked')) {
-//                 $(this).parent().parent().parent().toggleClass('complete');
-//             } else {
-//                 $(this).parent().parent().parent().toggleClass('complete');
-//             }
-//         });
-//         $('.todo-list .todo-item.added .remove-todo-item').click(function() {
-//             $(this).parent().remove();
-//         });
-//     });
-// }); 
+    document.addEventListener("DOMContentLoaded", function(){
+        // Update task 
+        var updateButtons = document.querySelectorAll(".update-task")
+
+        updateButtons.forEach(function(updateButton){
+            updateButton.onclick = function(){
+                console.log("update button clicked")
+                row = updateButton.parentNode.parentNode
+                console.log(row.cells[0])
+                let task_name_cell = row.cells[0]
+                current_task = task_name_cell.innerHTML
+
+                let task_update_input = prompt("Enter the updated task", task_name_cell.innerHTML)
+                task_name_cell.innerHTML = task_update_input
+
+                // Send update to backend 
+                form_data = new FormData()
+                form_data.append("updated_task", task_update_input)
+                form_data.append("current_task", current_task)
+                fetch("/update_task/",{
+                    method:"POST",
+                    body:form_data
+                }
+                ).then(response => response.json())
+
+                
+                
+            }
+        })
+
+        // Add task 
+        document.querySelector("#add-task").onclick = function(){
+            task_to_add = document.querySelector("#task-input").value
+            user_name = '{{request.user}}'
+            form_data = new FormData()
+            form_data.append("task_to_add", task_to_add)
+            form_data.append("user_name", user_name)
+            fetch("/create_task/", {
+                method:"POST",
+                body:form_data
+            }).then(response => response.json()).then(data = function(data){
+               if(data.add_task == 200){
+                window.location.reload()
+               }
+               else if(data.add_task == 20){
+                 document.querySelector("#task_add").innerHTML = "Task already exists!"
+               }
+            })
+        }
+        // Delete task 
+        var delete_buttons = document.querySelectorAll(".delete-task")
+        delete_buttons.forEach(function(deleteButton){
+            deleteButton.addEventListener("click", function(){
+                row = deleteButton.parentNode.parentNode 
+                task_name = row.cells[0].innerHTML
+                form_data = new FormData()
+                form_data.append("task_name", task_name)
+                fetch("/delete_task/", {
+                    method:"POST",
+                    body:form_data
+                }).then(response => response.json()).then(data = function(data){
+                    window.location.reload()
+                })
+            })
+        })
+        // Complete Task 
+        completeButtons = document.querySelectorAll(".complete-task")
+        completeButtons.forEach(function(completeButton){
+            completeButton.onclick = function(){
+                row = completeButton.parentNode.parentNode
+                task_name = row.cells[0].innerHTML
+                form_data = new FormData()
+                form_data.append("task_name", task_name)
+                fetch("/complete_task/",{
+                    method:"POST",
+                    body:form_data
+                }).then(response => response.json()).then(data = function(data){
+                    window.location.reload()
+                })
+            }
+            
+        })
+
+        
+    })
 </script>
+
  <title>To-Do</title>
 {% endblock %}
+
 {% block body %} 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-white">
-                <div class="card-body">
-                    <form action="javascript:void(0);">
-                        <input type="text" class="form-control add-task" placeholder="New Task...">
-                        <button type="button" id = "submit" class="btn btn-link" data-mdb-ripple-color="dark">Add Task
-                        </button>
-                        
-                    </form>
-                    <ul class="nav nav-pills todo-nav">
-                        <li role="presentation" class="nav-item all-task active"><a href="#" class="nav-link">All</a></li>
-                        <li role="presentation" class="nav-item active-task"><a href="#" class="nav-link">Active</a></li>
-                        <li role="presentation" class="nav-item completed-task"><a href="#" class="nav-link">Completed</a></li>
-                    </ul>
-                    <div class="todo-list">
-                        <div class="todo-item">
-                            <div class="checker"><span class=""><input type="checkbox"></span></div>
-                            <span>Create theme</span>
-                            <a href="javascript:void(0);" class="float-right remove-todo-item"><i class="icon-close"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<body>
+    <div class="container" style="position: relative;">
+        <div class="header">
+            <h1>Task Scheduler</h1>
+        </div>
+
+        <div class="task-form">
+            <input type="text" id="task-input" placeholder="Enter a new task">
+            <button id="add-task">Add Task</button>
+        </div>
+
+        <div class="task-buttons">
+            <!-- <button id="all-tasks" class="btn btn-secondary" data-mdb-ripple-color="light">All Tasks</button> -->
+            <a href="{% url 'task_app:completed' %}"><button id="completed_tasks" class="btn btn-secondary" data-mdb-ripple-color="light">Completed</button></a>
+        </div>
+<br>
+        <div class="task-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Task Description</th>
+                        <th>Action</th>
+                        <th>Mark Complete</th>
+                    </tr>
+                </thead>
+                <tbody id="tasks">
+                    <tr>
+                        <td>Sample Task 1</td>
+                        <td>
+                            <button class="update-task">Update</button>
+                            <button class="delete-task">Delete</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-tertiary" style = "color:blue">Complete</button>
+                        </td>
+                    </tr>
+                    {% for task in all_tasks %} 
+                    <tr>
+                        <td>{{task.task_name}}</td>
+                        <td>
+                            <button class="update-task">Update</button>
+                            <button class="delete-task">Delete</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-tertiary complete-task" style = "color:blue">Complete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <strong id="task_add" style="color: red; font-size: 20px;"></strong>
+            
+        </div>
+
+        <div class="logout-button" style="position: absolute; top: 10px; right: 10px;">
+            <a href="{% url 'task_app:logout_view' %}">
+                <button class="btn btn-tertiary" data-mdb-ripple-color="light">Logout</button>
+            </a>
         </div>
     </div>
+
+    
+</body>
+
+
+
+
+{% endblock %}
+
+{% block body_unverified %} 
+<div class="d-flex justify-content-center align-items-center container">
+    <div class="card py-5 px-3">
+        <h5 class="m-0">Email verification</h5>
+        <span class="mobile-text">Enter the code we just sent to your email <b class="text-danger">{{request.user.email}}</b></span>
+        <div class="d-flex flex-row mt-5">
+            <input type="text" id="otp_entered" class="form-control" autofocus="">
+        </div>
+
+        <div class="text-center">
+            <strong id="otp_response" style="color: red; font-size: 20px;"></strong>
+        </div>
+
+        <div class="text-center mt-5">
+            <span class="d-block mobile-text">Don't receive the code?</span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-2">
+            <button type="button" class="btn btn-secondary" id="resend">Resend OTP</button>
+            <a href="{% url 'task_app:logout_view' %}" class="btn btn-tertiary" id="logout">Logout</a>
+        </div>
+
+        <strong id="sent_again" class="text-center" style="color: green;"></strong>
+    </div>
 </div>
+
+
+<script>
+ 
+
+    // OTP Handle 
+    document.addEventListener("DOMContentLoaded", function(){
+        var verification = '{{verification}}'
+        // console.log(verification)
+        // OTP Verification script 
+       
+        document.querySelector("#otp_entered").onkeyup = function(){
+            var length_otp = document.querySelector("#otp_entered").value 
+            form_data = new FormData()
+            if(length_otp.length == 4){
+                form_data = new FormData()
+                form_data.append("otp", length_otp) 
+                form_data.append("user", "{{ request.user}}")
+                fetch("verify_otp/",{
+                    method:"POST",
+                    body:form_data
+                }
+                ).then(response => response.json()).then(data = function(data){
+                    console.log(data.otp_response)
+                    if(data.otp_response == 20 ){
+                        document.querySelector("#otp_response").innerHTML = "Invalid otp!"
+                    }
+                    if(data.otp_response == 200){
+                        location.reload();
+    
+                    }
+                }).then(error => console.log(error))
+            }
+        }
+    
+        console.log("test")
+        // RESEND OTP SCRIPT 
+        document.querySelector("#resend").onclick = function(){
+            form_data = new FormData()
+            form_data.append("user", "{{request.user}}")
+            fetch("/resend_otp/",{
+                method:"POST",
+                body:form_data
+            }).then(response => response.json()).then(data = function(data){
+                if(data.otp_resend == 200){
+                    document.querySelector("#sent_again").innerHTML = "OTP sent to email!"
+                }
+            })
+        }
+    
+        
+    
+    
+    
+     
+    })
+    </script>
+
+    
 {% endblock %}

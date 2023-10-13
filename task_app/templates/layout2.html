@@ -115,10 +115,13 @@ div.button, div.checker, div.radio, div.selector, div.uploader {
     {% block header %}{% endblock %}
 </head>
 <body>
+{% if request.user.is_verified == True %}
     {% block body %}
     {% endblock %}
+{% elif request.user.is_verified == False %}
     {% block body_unverified %} 
     {% endblock %}
+{% endif %}
     
 
 </body>

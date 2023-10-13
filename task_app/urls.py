@@ -12,5 +12,9 @@ urlpatterns = [
     path("validate_username/", views.validate_username, name = "validate_username"),
     path("validate_email/", views.validate_email, name = "validate_email"),
     path("register_view/", views.register_view, name = "register_view"),
-   
+    path("verify_otp/", views.verify_otp, name = "verify_otp"),
+    path("logout_view", views.logout_view, name = "logout_view"),
+    path("resend_otp/", views.resend_otp, name = "resend_otp"),
+    path("completed/", views.completed_tasks, name = "completed"),
+    path("complete_task/", views.complete_task, name = "complete_task")
 ]
