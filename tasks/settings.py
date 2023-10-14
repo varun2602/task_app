@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'tasks.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'task_app',
-        'USER': 'postgres',
-        'PASSWORD': '1',
-        'HOST': 'localhost',
+        'NAME': 'database_name_task_app',
+        'USER': 'postgresvarun',
+        'PASSWORD': '111111111',
+        'HOST': 'backendcoursevarun.czmp0f0645xs.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }}
 
@@ -141,3 +141,13 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'cosmosv26@gmail.com'
 EMAIL_HOST_PASSWORD = 'jtrfhupjxisrjsvt'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+AWS_ACCESS_KEY_ID = 'AKIAUPMXWDYSPRQXSPXQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'backendcoursevarun'
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERIFY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
